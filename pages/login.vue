@@ -8,14 +8,11 @@
       <div class="loginFormWrapper">
         <form class="loginForm">
           <input
-            class="inputId"
-            type="text"
-            placeholder="아이디를 입력해주세요"
-          />
-          <input
-            class="inputPw"
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
+            v-for="{ id, className, type, placeholder } in inputProps"
+            :key="id"
+            :class="className"
+            :type="type"
+            :placeholder="placeholder"
           />
           <MemberBtn @click.native="loginAlert">로그인</MemberBtn>
         </form>
@@ -29,6 +26,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import MemberTab from '../components/MemberTab'
 import MemberBtn from '../components/MemberBtn'
 
@@ -36,6 +34,32 @@ export default {
   components: {
     MemberTab,
     MemberBtn,
+  },
+
+  data() {
+    return {
+      inputs: [],
+    }
+  },
+
+  computed: {
+    inputProps() {
+      return this.inputs.map((input, index) => ({
+        id: index,
+        className: input.class,
+        type: input.type,
+        placeholder: input.placeholder,
+      }))
+    },
+  },
+
+  created() {
+    axios
+      .get('/data/loginInputData.json')
+      .then((res) => res.data)
+      .then((data) => {
+        this.inputs = data.inputs
+      })
   },
 
   methods: {

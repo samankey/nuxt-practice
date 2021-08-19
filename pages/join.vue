@@ -5,19 +5,11 @@
       <div class="loginFormWrapper">
         <form class="loginForm">
           <input
-            class="inputId"
-            type="text"
-            placeholder="이메일을 입력해주세요"
-          />
-          <input
-            class="inputPw"
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-          />
-          <input
-            class="inputPw"
-            type="password"
-            placeholder="비밀번호를 다시 입력해주세요"
+            v-for="{ id, className, type, placeholder } in inputProps"
+            :key="id"
+            :class="className"
+            :type="type"
+            :placeholder="placeholder"
           />
           <div class="checkBox">
             <input type="checkbox" name="personalInfo" />
@@ -31,12 +23,40 @@
 </template>
 
 <script>
+import axios from 'axios'
 import MemberTab from '../components/MemberTab'
 import MemberBtn from '../components/MemberBtn'
+
 export default {
   components: {
     MemberTab,
     MemberBtn,
+  },
+
+  data() {
+    return {
+      inputs: [],
+    }
+  },
+
+  computed: {
+    inputProps() {
+      return this.inputs.map((input, index) => ({
+        id: index,
+        className: input.class,
+        type: input.type,
+        placeholder: input.placeholder,
+      }))
+    },
+  },
+
+  created() {
+    axios
+      .get('/data/joinInputData.json')
+      .then((res) => res.data)
+      .then((data) => {
+        this.inputs = data.inputs
+      })
   },
 
   methods: {

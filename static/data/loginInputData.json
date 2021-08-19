@@ -1,0 +1,16 @@
+{
+  "inputs": [
+    {
+      "id": 1,
+      "class": "inputId",
+      "type": "text",
+      "placeholder": "이메일을 입력해주세요"
+    },
+    {
+      "id": 2,
+      "class": "inputPw",
+      "type": "password",
+      "placeholder": "비밀번호를 입력해주세요"
+    }
+  ]
+}
